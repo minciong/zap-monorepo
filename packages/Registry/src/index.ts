@@ -151,7 +151,9 @@ import {Filter, txid,address,NetworkProviderOptions,DEFAULT_GAS,NULL_ADDRESS} fr
      * @returns {Promise<txid>} Returns a Promise that will eventually resolve into a transaction hash
      */
     async initiateProviderCurve({endpoint, term, broker=NULL_ADDRESS, from, gas=DEFAULT_GAS}:InitCurve):Promise<txid> {
-        return await this.contract.methods.initiateProviderCurve(utf8ToHex(endpoint), term, broker)
+        let curve = new Curve(term);
+        var convertedCurve = (curve.convertToBNArrays()).map(x => String(x))
+        return await this.contract.methods.initiateProviderCurve(utf8ToHex(endpoint), convertedCurve, broker)
             .send({from, gas});
     }
 
